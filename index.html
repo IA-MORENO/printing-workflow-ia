@@ -18,7 +18,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--text-dark); }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
 
         /* --- NAVEGACIÓN --- */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; border-bottom: 1px solid var(--border-ui); }
@@ -26,115 +26,50 @@
 
         /* --- HERO SECTION --- */
         .hero-section { display: grid; grid-template-columns: 1.1fr 0.9fr; min-height: 90vh; }
-
         .content-area { padding: 60px 8%; display: flex; flex-direction: column; justify-content: center; }
         h1 { font-size: 3.2rem; color: var(--primary-blue); line-height: 1.1; margin-bottom: 20px; font-weight: 800; letter-spacing: -0.03em; }
         .hero-description { font-size: 1.2rem; color: var(--text-gray); margin-bottom: 40px; }
 
         /* --- CONTENEDOR DE CÍRCULOS --- */
         .stats-mirror-container {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 50px;
-            padding: 25px;
-            background: #f8fafc;
-            border-radius: 20px;
-            border: 1px solid var(--border-ui);
-            width: fit-content;
+            display: flex; gap: 40px; margin-bottom: 50px; padding: 25px;
+            background: #f8fafc; border-radius: 20px; border: 1px solid var(--border-ui); width: fit-content;
         }
-
         .stat-box { display: flex; align-items: center; gap: 15px; }
-
         .circle-base {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            width: 90px; height: 90px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; position: relative;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-
         .circle-base::after {
-            content: attr(data-value);
-            position: absolute;
-            width: 72px;
-            height: 72px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.1rem;
+            content: attr(data-value); position: absolute; width: 72px; height: 72px;
+            background: white; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-weight: 800; font-size: 1.1rem;
         }
-
         .circle-savings { background: conic-gradient(var(--accent-green) 108deg, #e2e8f0 0deg); }
         .circle-savings::after { color: var(--accent-green); }
-
-        .circle-progress { 
-            background: conic-gradient(var(--primary-blue) 0deg, #e2e8f0 0deg); 
-            transition: background 0.4s ease;
-        }
+        .circle-progress { background: conic-gradient(var(--primary-blue) 0deg, #e2e8f0 0deg); transition: background 0.4s ease; }
         .circle-progress::after { color: var(--primary-blue); }
-
         .stat-label { font-weight: 700; font-size: 0.9rem; color: var(--text-dark); line-height: 1.2; }
         .stat-label span { display: block; font-size: 0.75rem; color: var(--text-gray); font-weight: 400; margin-top: 4px; }
 
-        /* --- BENEFICIOS CLAVE (NUEVO SECCIÓN) --- */
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
+        /* --- BENEFICIOS --- */
+        .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+        .benefit-card { background: white; padding: 20px; border-radius: 16px; border: 1px solid var(--border-ui); transition: all 0.3s ease; }
+        .benefit-card:hover { border-color: var(--primary-blue); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .benefit-card i { color: var(--primary-blue); margin-bottom: 12px; }
+        .benefit-card h3 { font-size: 0.95rem; margin-bottom: 8px; color: var(--text-dark); }
+        .benefit-card p { font-size: 0.8rem; color: var(--text-gray); line-height: 1.4; }
 
-        .benefit-card {
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid var(--border-ui);
-            transition: all 0.3s ease;
-        }
-
-        .benefit-card:hover {
-            border-color: var(--primary-blue);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
-        .benefit-card i {
-            color: var(--primary-blue);
-            margin-bottom: 12px;
-        }
-
-        .benefit-card h3 {
-            font-size: 0.95rem;
-            margin-bottom: 8px;
-            color: var(--text-dark);
-        }
-
-        .benefit-card p {
-            font-size: 0.8rem;
-            color: var(--text-gray);
-            line-height: 1.4;
-        }
-
-        /* --- FORMULARIO LATERAL --- */
+        /* --- FORMULARIO --- */
         .form-side { background-color: #f1f5f9; padding: 40px; display: flex; align-items: center; justify-content: center; }
         .form-card { background: white; padding: 40px; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); width: 100%; max-width: 420px; }
-        
         .form-card h2 { font-size: 1.25rem; margin-bottom: 25px; color: var(--primary-blue); font-weight: 700; }
         label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-gray); }
         input, select { width: 100%; padding: 14px; margin-bottom: 20px; border: 1px solid var(--border-ui); border-radius: 12px; font-size: 1rem; background: #fcfdfe; }
-        input:focus { outline: 2px solid var(--primary-blue); border-color: transparent; }
-
         .btn-audit { width: 100%; background: var(--primary-blue); color: white; padding: 18px; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.3s; }
-        .btn-audit:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(30,58,138,0.2); }
 
-        @media (max-width: 1100px) { .benefits-grid { grid-template-columns: 1fr; } }
-        @media (max-width: 968px) { .hero-section { grid-template-columns: 1fr; } .stats-mirror-container { flex-direction: column; } }
+        @media (max-width: 968px) { .hero-section { grid-template-columns: 1fr; } .benefits-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -154,7 +89,6 @@
                     <div class="circle-base circle-savings" data-value="30%"></div>
                     <div class="stat-label">Ahorro Estimado<span>Potencial de reducción</span></div>
                 </div>
-
                 <div class="stat-box">
                     <div id="progreso-circulo" class="circle-base circle-progress" data-value="0%"></div>
                     <div class="stat-label">Tu Progreso<span>Cuestionario completado</span></div>
@@ -176,19 +110,19 @@
             </h2>
             <div class="benefits-grid">
                 <div class="benefit-card">
-                    <i data-lucide="trending-down" width="24" height="24"></i>
+                    <i data-lucide="trending-down"></i>
                     <h3>Reducción de Costes</h3>
                     <p>Disminución inmediata de hasta un 30% en gastos operativos.</p>
                 </div>
                 <div class="benefit-card">
-                    <i data-lucide="clipboard-check" width="24" height="24"></i>
+                    <i data-lucide="clipboard-check"></i>
                     <h3>Control Total</h3>
-                    <p>Monitorización exacta de quién imprime qué y cuándo.</p>
+                    <p>Monitorización exacta de quién imprime qué.</p>
                 </div>
                 <div class="benefit-card">
-                    <i data-lucide="shield-check" width="24" height="24"></i>
+                    <i data-lucide="shield-check"></i>
                     <h3>Seguridad IA</h3>
-                    <p>Detección de vulnerabilidades en la red de impresión.</p>
+                    <p>Detección de vulnerabilidades en la red.</p>
                 </div>
             </div>
         </section>
@@ -199,56 +133,126 @@
                 <form id="audit-form">
                     <label>Nombre de la Empresa</label>
                     <input type="text" id="nombre" class="track-input" placeholder="Ej: Solitium S.L." required>
-
                     <label>Email Corporativo</label>
                     <input type="email" id="email" class="track-input" placeholder="nombre@empresa.com" required>
-
                     <label>Sector Industrial</label>
                     <select id="sector" class="track-input" required>
                         <option value="">Seleccionar...</option>
                         <option value="legal">Legal / Notarías</option>
                         <option value="sanidad">Sanidad</option>
                         <option value="educacion">Educación</option>
-                        <option value="logistica">Logística</option>
                     </select>
-
                     <button type="submit" class="btn-audit">Generar Informe IA</button>
-                    <p style="text-align:center; font-size:0.75rem; color:var(--text-gray); margin-top:15px;">
-                        <i data-lucide="lock" style="width:12px; vertical-align:middle;"></i> Procesamiento de datos seguro y privado.
-                    </p>
                 </form>
             </div>
         </section>
     </main>
 
+    <div id="chatbot-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; font-family: 'Inter', sans-serif;">
+        <div id="chat-button" style="background: var(--primary-blue); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s;">
+            <i data-lucide="message-square" style="color: white;"></i>
+        </div>
+
+        <div id="chat-window" style="display: none; width: 350px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid var(--border-ui); overflow: hidden; margin-bottom: 10px;">
+            <div style="background: var(--primary-blue); padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700; font-size: 0.9rem;">Asistente Solitium IA</span>
+                <i data-lucide="x" id="close-chat" style="cursor: pointer; width: 18px;"></i>
+            </div>
+            <div id="chat-messages" style="height: 300px; padding: 15px; overflow-y: auto; font-size: 0.85rem; display: flex; flex-direction: column; gap: 10px; background: #f8fafc;"></div>
+            <div style="padding: 10px; border-top: 1px solid var(--border-ui); display: flex; gap: 5px;">
+                <input type="text" id="chat-input" placeholder="Escribe tu respuesta..." style="flex: 1; padding: 10px; border: 1px solid var(--border-ui); border-radius: 10px; outline: none; margin-bottom: 0;">
+                <button id="send-btn" style="background: var(--primary-blue); color: white; border: none; border-radius: 10px; padding: 0 15px; cursor: pointer;">
+                    <i data-lucide="send" style="width: 16px;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         lucide.createIcons();
 
+        // Lógica de Círculo de Progreso
         const inputs = document.querySelectorAll('.track-input');
         const circleProg = document.getElementById('progreso-circulo');
 
         function updateProgress() {
             let completed = 0;
-            inputs.forEach(input => {
-                if (input.value.trim() !== "") completed++;
-            });
-
+            inputs.forEach(input => { if (input.value.trim() !== "") completed++; });
             const percentage = Math.round((completed / 3) * 100);
             const degrees = (percentage * 360) / 100;
-
             circleProg.style.background = `conic-gradient(var(--primary-blue) ${degrees}deg, #e2e8f0 0deg)`;
             circleProg.setAttribute('data-value', percentage + "%");
-            
             if(percentage === 100) {
                 circleProg.setAttribute('data-value', "✓");
                 circleProg.style.background = `conic-gradient(var(--accent-green) 360deg, #e2e8f0 0deg)`;
             }
         }
-
         inputs.forEach(input => {
             input.addEventListener('input', updateProgress);
             input.addEventListener('change', updateProgress);
         });
+
+        // Lógica del Chatbot
+        const chatBtn = document.getElementById('chat-button');
+        const chatWin = document.getElementById('chat-window');
+        const closeChat = document.getElementById('close-chat');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        let step = 0;
+        const questions = [
+            "¡Hola! Soy el asistente de Solitium. ¿Cuál es tu nombre?",
+            "Genial. ¿Aproximadamente cuántas impresoras tenéis en la oficina?",
+            "¿Cuál es vuestro principal problema: el coste o el mantenimiento?",
+            "¡Perfecto! He registrado tus datos. Si quieres el informe detallado, completa el formulario de la izquierda."
+        ];
+        const userResponses = {};
+
+        function addMessage(text, isBot = true) {
+            const msg = document.createElement('div');
+            msg.style.padding = "10px 15px";
+            msg.style.borderRadius = "15px";
+            msg.style.maxWidth = "80%";
+            if (isBot) {
+                msg.style.background = "#e2e8f0";
+                msg.style.alignSelf = "flex-start";
+            } else {
+                msg.style.background = "var(--primary-blue)";
+                msg.style.color = "white";
+                msg.style.alignSelf = "flex-end";
+            }
+            msg.innerText = text;
+            chatMessages.appendChild(msg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        chatBtn.onclick = () => {
+            chatWin.style.display = 'block';
+            chatBtn.style.display = 'none';
+            if (step === 0) setTimeout(() => addMessage(questions[0]), 500);
+        };
+
+        closeChat.onclick = () => {
+            chatWin.style.display = 'none';
+            chatBtn.style.display = 'flex';
+        };
+
+        function handleSend() {
+            const text = chatInput.value.trim();
+            if (text === "") return;
+            addMessage(text, false);
+            userResponses[`pregunta_${step}`] = text;
+            chatInput.value = "";
+            step++;
+            if (step < questions.length) {
+                setTimeout(() => addMessage(questions[step]), 800);
+            }
+            console.log("Datos capturados:", userResponses);
+        }
+
+        sendBtn.onclick = handleSend;
+        chatInput.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
     </script>
 </body>
 </html>
