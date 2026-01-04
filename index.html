@@ -69,6 +69,48 @@
         input, select { width: 100%; padding: 14px; margin-bottom: 20px; border: 1px solid var(--border-ui); border-radius: 12px; font-size: 1rem; background: #fcfdfe; }
         .btn-audit { width: 100%; background: var(--primary-blue); color: white; padding: 18px; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.3s; }
 
+        /* --- EFECTOS ESPECIALES CHATBOT --- */
+        #chat-button { 
+            animation: radar 2s infinite, magnet 4s infinite, glow 2s infinite alternate; 
+            position: relative; 
+            border: 2px solid var(--accent-green);
+        }
+
+        /* Efecto Radar */
+        @keyframes radar {
+          0% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0.7); }
+          70% { box-shadow: 0 0 0 20px rgba(30, 58, 138, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(30, 58, 138, 0); }
+        }
+
+        /* Efecto Magnet (Sacudida) */
+        @keyframes magnet { 
+            0%, 90% { transform: translateX(0); } 
+            93% { transform: translateX(-10px); } 
+            96% { transform: translateX(5px); } 
+            100% { transform: translateX(0); } 
+        }
+
+        /* Efecto Glow Verde IA */
+        @keyframes glow { 
+            from { box-shadow: 0 0 5px var(--accent-green); } 
+            to { box-shadow: 0 0 20px var(--accent-green); } 
+        }
+
+        /* Notificación Roja */
+        #chat-button::before { 
+            content: '1'; position: absolute; top: -5px; left: -5px; 
+            background: #ef4444; color: white; width: 22px; height: 22px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 11px; font-weight: bold; border: 2px solid white; 
+            animation: pulse-notif 1s infinite; z-index: 10;
+        }
+        @keyframes pulse-notif { 
+            0% { transform: scale(1); } 
+            50% { transform: scale(1.2); } 
+            100% { transform: scale(1); } 
+        }
+
         @media (max-width: 968px) { .hero-section { grid-template-columns: 1fr; } .benefits-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -105,9 +147,6 @@
                 <p>• Reducción de huella de carbono</p>
             </div>
 
-            <h2 style="font-size: 1.1rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                <i data-lucide="star" style="color: #f59e0b;"></i> Beneficios Clave
-            </h2>
             <div class="benefits-grid">
                 <div class="benefit-card">
                     <i data-lucide="trending-down"></i>
@@ -141,6 +180,7 @@
                         <option value="legal">Legal / Notarías</option>
                         <option value="sanidad">Sanidad</option>
                         <option value="educacion">Educación</option>
+                        <option value="industrial">Industrial</option>
                     </select>
                     <button type="submit" class="btn-audit">Generar Informe IA</button>
                 </form>
@@ -149,7 +189,7 @@
     </main>
 
     <div id="chatbot-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; font-family: 'Inter', sans-serif;">
-        <div id="chat-button" style="background: var(--primary-blue); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s;">
+        <div id="chat-button" style="background: var(--primary-blue); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s;">
             <i data-lucide="message-square" style="color: white;"></i>
         </div>
 
@@ -171,7 +211,30 @@
     <script>
         lucide.createIcons();
 
-        // Lógica de Círculo de Progreso
+        // 1. Mensajes flotantes dinámicos
+        const dynamicMessages = ["¿Cuánto gastas en tóner? 🤔", "¿Sabes que puedes ahorrar un 30%? 📉", "Hola, ¿te ayudo con tu auditoría? ✨"];
+        const tooltipBox = document.createElement('div');
+        tooltipBox.id = "chat-tooltip";
+        tooltipBox.style = 'position:fixed; bottom:95px; right:25px; background:white; color:#1e3a8a; padding:12px; border-radius:15px; font-size:14px; font-weight:700; box-shadow:0 5px 20px rgba(0,0,0,0.2); border:2px solid #1e3a8a; z-index:1001; transition: 0.5s;';
+        document.body.appendChild(tooltipBox);
+        
+        let msgIndex = 0;
+        tooltipBox.innerText = dynamicMessages[0];
+        setInterval(() => {
+            msgIndex = (msgIndex + 1) % dynamicMessages.length;
+            tooltipBox.style.opacity = '0';
+            setTimeout(() => {
+                tooltipBox.innerText = dynamicMessages[msgIndex];
+                tooltipBox.style.opacity = '1';
+            }, 500);
+        }, 4000);
+
+        // Ocultar tooltip al abrir chat
+        function toggleTooltip(show) {
+            tooltipBox.style.display = show ? 'block' : 'none';
+        }
+
+        // 2. Lógica de Círculo de Progreso
         const inputs = document.querySelectorAll('.track-input');
         const circleProg = document.getElementById('progreso-circulo');
 
@@ -192,7 +255,7 @@
             input.addEventListener('change', updateProgress);
         });
 
-        // Lógica del Chatbot
+        // 3. Lógica del Chatbot
         const chatBtn = document.getElementById('chat-button');
         const chatWin = document.getElementById('chat-window');
         const closeChat = document.getElementById('close-chat');
@@ -230,12 +293,14 @@
         chatBtn.onclick = () => {
             chatWin.style.display = 'block';
             chatBtn.style.display = 'none';
+            toggleTooltip(false);
             if (step === 0) setTimeout(() => addMessage(questions[0]), 500);
         };
 
         closeChat.onclick = () => {
             chatWin.style.display = 'none';
             chatBtn.style.display = 'flex';
+            toggleTooltip(true);
         };
 
         function handleSend() {
@@ -248,7 +313,6 @@
             if (step < questions.length) {
                 setTimeout(() => addMessage(questions[step]), 800);
             }
-            console.log("Datos capturados:", userResponses);
         }
 
         sendBtn.onclick = handleSend;
