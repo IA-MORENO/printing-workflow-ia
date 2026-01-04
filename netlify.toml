@@ -1,0 +1,37 @@
+[build]
+  publish = "." # Asumiendo que tu index.html está en la raíz de la carpeta
+
+# -------------------------
+# HEADERS DE SEGURIDAD (A+)
+# -------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    X-XSS-Protection = "1; mode=block"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    # CSP Corregido: Permitimos fuentes de Google y tu conexión a Railway
+    Content-Security-Policy = """
+      default-src 'self';
+      img-src 'self' data: https:;
+      script-src 'self' 'unsafe-inline' https:;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      connect-src 'self' https://TU-URL-DE-RAILWAY.com;
+    """
+
+# -------------------------
+# CACHE OPTIMIZADO (Activos Estáticos)
+# -------------------------
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#004da1">
+
+    <title>Auditoría de Impresión IA | B2B Eficiencia</title>
+
+    <style>
+        :root {
+            --primary: #004da1; 
+            --primary-dark: #003a7a;
+            --error: #b91d1d; 
+            --success: #166534;
+            --bg: #f4f7f9;
+            --text: #1a1a1a;
+            --border: #8d9196;
+            --transition: all .2s ease-in-out;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 20px auto;
+            background: #fff;
+            padding: clamp(20px, 5vw, 40px);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        header { text-align: center; margin-bottom: 32px; }
+        h1 { color: var(--primary); margin: 0; font-size: clamp(1.6rem, 5vw, 2.2rem); }
+
+        fieldset {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        legend {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            padding: 0 10px;
+            background: #fff;
+        }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media(max-width:768px){ .grid { grid-template-columns: 1fr; } }
+
+        .form-group { display: flex; flex-direction: column; margin-bottom: 4px; }
+        label { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            min-height: 48px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            font-size: 1rem;
+        }
+
+        input:focus-visible, select:focus-visible {
+            outline: 3px solid #ffbf47;
+            outline-offset: 2px;
+        }
+
+        .invalid { border-color: var(--error) !important; }
+
+        .error-text {
+            display: none;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--error);
+            margin-top: 8px;
+            border-left: 3px solid var(--error);
+            padding-left: 8px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .btn-submit[disabled], .btn-submit.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .spinner {
+            width: 1.2em; height: 1.2em;
+            border: 3px solid rgba(255,255,255,.3);
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            display: none;
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading .spinner { display: block; }
+
+        #response-area {
+            margin-top: 30px;
+            padding: 24px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        #response-area.visible { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .status-loading { background: #eff6ff; border: 2px solid #bfdbfe; color: #1e40af; }
+        .status-success { background: #f0fdf4; border: 2px solid #bbf7d0; color: #166534; }
+        .status-error { background: #fef2f2; border: 2px solid #fecaca; color: #991b1b; }
+
+        .hp-field { position: absolute; left: -5000px; visibility: hidden; }
+    </style>
+</head>
+
+<body>
+<main class="container">
+    <header>
+        <h1>Auditoría de Impresión IA</h1>
+        <p>Optimización técnica para entornos corporativos</p>
+    </header>
+
+    <form id="ia-form" novalidate>
+        <div class="hp-field" aria-hidden="true">
+            <input type="text" id="hp_check" tabindex="-1" autocomplete="off">
+        </div>
+
+        <fieldset>
+            <legend>Información B2B</legend>
+            <div class="grid">
+                <div class="form-group">
+                    <label for="empresa_nombre">Nombre de la Empresa</label>
+                    <input id="empresa_nombre" name="empresa_nombre" data-v="required" required 
+                           aria-describedby="err-empresa">
+                    <span id="err-empresa" class="error-text" aria-live="polite">Mínimo 3 caracteres.</span>
+                </div>
+                <div class="form-group">
+                    <label for="empresa_sector">Sector</label>
+                    <select id="empresa_sector" name="empresa_sector" data-v="required" required 
+                            aria-describedby="err-sector">
+                        <option value="" disabled selected>Seleccione...</option>
+                        <option value="legal">Legal</option>
+                        <option value="sanidad">Sanidad</option>
+                    </select>
+                    <span id="err-sector" class="error-text" aria-live="polite">Campo obligatorio.</span>
+                </div>
+            </div>
+        </fieldset>
+
+        <button id="submit-btn" class="btn-submit" type="submit">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="btn-text">Iniciar Auditoría</span>
+        </button>
+    </form>
+
+    <section id="response-area" role="status" aria-live="polite">
+        <h2 id="res-title" style="font-size: 1.1rem; margin: 0;"></h2>
+        <p id="res-text" style="margin: 8px 0 0;"></p>
+    </section>
+</main>
+
+<script>
+    const form = document.getElementById('ia-form');
+    const btn = document.getElementById('submit-btn');
+    const resArea = document.getElementById('response-area');
+    let isSubmitting = false;
+
+    const sanitize = str => {
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    };
+
+    const updateUI = (type, title, msg) => {
+        resArea.className = `status-${type} visible`;
+        resArea.querySelector('#res-title').textContent = title;
+        resArea.querySelector('#res-text').textContent = msg;
+        resArea.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (isSubmitting || document.getElementById('hp_check').value) return;
+
+        // Validación básica
+        let ok = true;
+        form.querySelectorAll('[data-v]').forEach(el => {
+            const valid = el.value.trim().length >= 3;
+            el.classList.toggle('invalid', !valid);
+            el.closest('.form-group').querySelector('.error-text').style.display = valid ? 'none' : 'block';
+            if (!valid) ok = false;
+        });
+        if (!ok) return;
+
+        isSubmitting = true;
+        btn.classList.add('loading');
+        updateUI('loading', 'Procesando...', 'Conectando con el servidor seguro...');
+
+        const payload = Object.fromEntries(new FormData(form));
+        Object.keys(payload).forEach(k => payload[k] = sanitize(payload[k]));
+
+        try {
+            // 1. INTENTO DE PETICIÓN (Captura errores de Red/DNS/CORS)
+            const response = await fetch('TU_URL_WEBHOOK_RAILWAY', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(networkErr => {
+                // Error de Red Puro (Offline, DNS fail, etc.)
+                throw { type: 'NETWORK', message: 'No hay conexión con el servidor. Revise su internet.' };
+            });
+
+            // 2. VALIDACIÓN DE PROTOCOLO (Captura 404, 500, etc.)
+            if (!response.ok) {
+                let serverMsg = `Error del sistema (${response.status})`;
+                try {
+                    const errorData = await response.json();
+                    serverMsg = errorData.message || serverMsg;
+                } catch(e) {}
+                throw { type: 'HTTP', status: response.status, message: serverMsg };
+            }
+
+            // 3. VALIDACIÓN DE DATOS (JSON malformado o Lógica de Negocio)
+            const data = await response.json().catch(() => {
+                throw { type: 'PARSE', message: 'Respuesta del servidor no válida.' };
+            });
+
+            // ÉXITO
+            btn.classList.replace('loading', 'success');
+            updateUI('success', '¡Recibido!', 'Su auditoría está siendo generada.');
+            form.reset();
+
+        } catch (err) {
+            // MANEJO GRANULAR DE ERRORES
+            console.error(`[${err.type || 'UNKNOWN'}]`, err);
+            
+            btn.classList.remove('loading');
+            const title = err.type === 'NETWORK' ? 'Fallo de Conexión' : 'Error en la Solicitud';
+            updateUI('error', title, err.message || 'Ocurrió un error inesperado.');
+            
+        } finally {
+            isSubmitting = false;
+        }
+    });
+</script>
+</body>
+</html>
