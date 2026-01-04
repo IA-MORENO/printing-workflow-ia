@@ -2,290 +2,253 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auditoría de Impresión IA - Ahorro Inteligente</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#1e40af">
+
+    <title>Dashboard Auditoría IA | Printing Workflow</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary-blue: #1e3a8a;
-            --accent-green: #22c55e;
-            --bg-light: #ffffff;
-            --bg-side: #94a3b833; /* El color azulado suave del lateral de tu imagen */
-            --text-dark: #1e293b;
-            --text-gray: #64748b;
+            --cobalto: #1e40af; /* Azul Cobalto */
+            --exito: #22c55e;   /* Verde Éxito */
+            --bg-dashboard: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-ui: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            overflow-x: hidden;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-dashboard);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
         }
 
-        /* --- NAVEGACIÓN --- */
-        nav {
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER ANALÍTICO --- */
+        .header-analitico {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
-            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-ui);
         }
 
-        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--primary-blue); }
-
-        .nav-links { display: flex; gap: 30px; list-style: none; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-size: 0.9rem; font-weight: 600; }
-
-        .btn-nav {
-            background-color: var(--accent-green);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 0.85rem;
+        .brand-pill {
+            background: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--border-ui);
             font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--cobalto);
+            box-shadow: var(--shadow-sm);
         }
 
-        /* --- LAYOUT PRINCIPAL (Dos columnas como en tu imagen) --- */
-        .hero-section {
+        h1 { font-size: 1.8rem; font-weight: 800; margin: 10px 0 0; letter-spacing: -0.02em; }
+        .subtitle { color: var(--text-muted); font-size: 1rem; }
+
+        /* --- PANEL DE MÉTRICAS (SIMULADOR) --- */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border-ui);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .metric-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+        .metric-value { font-size: 2rem; font-weight: 800; margin: 8px 0; display: block; }
+        .metric-trend { font-size: 0.85rem; font-weight: 600; color: var(--exito); display: flex; align-items: center; gap: 4px; }
+
+        /* --- ÁREA PRINCIPAL --- */
+        .main-grid {
             display: grid;
             grid-template-columns: 1.2fr 0.8fr;
-            min-height: calc(100vh - 80px);
+            gap: 30px;
         }
 
-        @media (max-width: 968px) {
-            .hero-section { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 850px) { .main-grid { grid-template-columns: 1fr; } }
 
-        /* --- COLUMNA IZQUIERDA (CONTENIDO) --- */
-        .content-area {
-            padding: 60px 10%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        h1 { font-size: 3rem; color: var(--primary-blue); line-height: 1.1; margin-bottom: 20px; }
-        h1 span { display: block; color: var(--primary-blue); opacity: 0.9; }
-
-        .hero-description { font-size: 1.2rem; color: var(--text-gray); margin-bottom: 40px; }
-
-        /* Gráfico de Ahorro Circular */
-        .savings-chart {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 50px;
-        }
-
-        .circle-progress {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: conic-gradient(var(--accent-green) 108deg, #e2e8f0 0deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
-        .circle-progress::after {
-            content: "30%";
-            position: absolute;
-            width: 90px;
-            height: 90px;
+        .form-card {
             background: white;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: var(--accent-green);
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid var(--border-ui);
+            box-shadow: var(--shadow-md);
         }
 
-        .chart-text { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); }
+        /* --- ESTILOS FORMULARIO --- */
+        fieldset { border: none; padding: 0; margin: 0 0 24px 0; }
+        legend { font-weight: 700; font-size: 1.1rem; margin-bottom: 20px; display: block; }
 
-        /* Beneficios con Iconos */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .feature-item {
-            background: #f8fafc;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .feature-item i { color: var(--primary-blue); margin-bottom: 10px; }
-        .feature-item h3 { font-size: 0.9rem; margin-bottom: 8px; color: var(--primary-blue); }
-        .feature-item p { font-size: 0.75rem; color: var(--text-gray); }
-
-        /* --- COLUMNA DERECHA (FORMULARIO) --- */
-        .form-side {
-            background-color: #f1f5f9; /* El fondo azul grisáceo de la imagen */
-            padding: 60px 10%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .form-container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
+        
+        input, select {
             width: 100%;
-            max-width: 400px;
-        }
-
-        .form-container label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-gray); }
-
-        .form-container input, .form-container select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #e2e8f0;
+            padding: 12px 16px;
+            border: 1px solid var(--border-ui);
             border-radius: 8px;
             font-size: 1rem;
+            background: #fcfdfe;
+            transition: all 0.2s;
         }
 
-        .btn-audit {
-            width: 100%;
-            background-color: var(--primary-blue);
+        input:focus { outline: 2px solid var(--cobalto); border-color: transparent; }
+
+        .btn-submit {
+            background: var(--cobalto);
             color: white;
-            padding: 15px;
+            width: 100%;
+            padding: 16px;
             border: none;
             border-radius: 8px;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
+            transition: transform 0.2s, background 0.2s;
         }
 
-        .btn-audit:hover { background-color: #1e3a8a; transform: translateY(-2px); }
+        .btn-submit:hover { background: #1e3a8a; transform: translateY(-1px); }
 
-        .form-note {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--accent-green);
-            margin-top: 15px;
-            font-weight: 600;
+        /* --- ÁREA DE RESPUESTA --- */
+        #response-area {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
         }
+        .status-success { background: #f0fdf4; border: 1px solid var(--exito); color: #166534; }
+        .visible { display: block !important; }
 
-        /* --- FOOTER --- */
-        footer {
-            padding: 40px 8%;
-            background: white;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            color: var(--text-gray);
-        }
+        .hp-field { position: absolute; left: -5000px; }
     </style>
 </head>
+
 <body>
 
-    <nav>
-        <div class="logo">
-            <i data-lucide="printer"></i>
-            Printing Workflow IA
+<div class="dashboard-container">
+    <header class="header-analitico">
+        <div>
+            <span class="brand-pill">PRINTING WORKFLOW IA</span>
+            <h1>Centro de Auditoría Analítica</h1>
+            <p class="subtitle">Análisis basado en datos para optimización de costes B2B</p>
         </div>
-        <ul class="nav-links">
-            <li><a href="#">Servicios</a></li>
-            <li><a href="#">Resultados</a></li>
-            <li><a href="#">Contacto</a></li>
-        </ul>
-        <a href="#" class="btn-nav">Iniciar Auditoría Gratuita</a>
-    </nav>
+    </header>
 
-    <main class="hero-section">
-        <section class="content-area">
-            <h1>Auditoría de Impresión IA: <span>Ahorro Inteligente</span></h1>
-            <p class="hero-description">Optimiza Costes. Maximiza Eficiencia. Basado en Datos Reales.</p>
-            
-            <div class="savings-chart">
-                <div class="circle-progress"></div>
-                <div class="chart-text">
-                    Ahorro Detectado Promedio <br>
-                    <span style="color: var(--accent-green);">↑ Optimización garantizada</span>
-                </div>
-            </div>
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <span class="metric-label">Ahorro Promedio Detectado</span>
+            <span class="metric-value" style="color: var(--exito);">31.4%</span>
+            <span class="metric-trend">▲ 2.5% este mes</span>
+        </div>
+        <div class="metric-card">
+            <span class="metric-label">Eficiencia Operativa</span>
+            <span class="metric-value" style="color: var(--cobalto);">98.2</span>
+            <span class="metric-trend">Índice de Salud Técnica</span>
+        </div>
+    </div>
 
-            <h2 style="font-size: 1.2rem; margin-bottom: 20px;">Beneficios Clave</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <i data-lucide="trending-up"></i>
-                    <h3>Potencial IA</h3>
-                    <p>Optimización basada en algoritmos predictivos.</p>
-                </div>
-                <div class="feature-item">
-                    <i data-lucide="clipboard-check"></i>
-                    <h3>Informe Real</h3>
-                    <p>Datos precisos extraídos de su infraestructura.</p>
-                </div>
-                <div class="feature-item">
-                    <i data-lucide="shield-check"></i>
-                    <h3>Seguridad</h3>
-                    <p>Cumplimiento total con normativas de datos.</p>
-                </div>
+    <div class="main-grid">
+        <section class="form-card">
+            <form id="ia-form" novalidate>
+                <div class="hp-field"><input type="text" id="hp_check"></div>
+                
+                <fieldset>
+                    <legend>Configuración de Nueva Auditoría</legend>
+                    
+                    <div class="form-group">
+                        <label for="empresa_nombre">Identificador de Empresa</label>
+                        <input id="empresa_nombre" name="empresa_nombre" required placeholder="Ej: Solitium S.L.">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="empresa_sector">Sector Vertical</label>
+                        <select id="empresa_sector" name="empresa_sector" required>
+                            <option value="" disabled selected>Seleccione industria...</option>
+                            <option value="legal">Servicios Legales / Notarías</option>
+                            <option value="sanidad">Sanidad / Clínicas</option>
+                            <option value="educacion">Educación / Universidades</option>
+                            <option value="logistica">Logística y Distribución</option>
+                        </select>
+                    </div>
+                </fieldset>
+
+                <button id="submit-btn" class="btn-submit" type="submit">
+                    Generar Informe de Ahorro
+                </button>
+            </form>
+
+            <div id="response-area" role="status">
+                <strong id="res-title"></strong>
+                <p id="res-text" style="margin: 5px 0 0;"></p>
             </div>
         </section>
 
-        <section class="form-side">
-            <div class="form-container">
-                <form id="audit-form">
-                    <label>Nombre de la Empresa</label>
-                    <input type="text" placeholder="Ej: Solitium S.L." required>
-
-                    <label>Email Corporativo</label>
-                    <input type="email" placeholder="nombre@empresa.com" required>
-
-                    <label>Sector</label>
-                    <select required>
-                        <option value="">Seleccionar sector...</option>
-                        <option>Legal / Notarías</option>
-                        <option>Sanidad</option>
-                        <option>Educación</option>
-                        <option>Logística</option>
-                    </select>
-
-                    <button type="submit" class="btn-audit">Agenda Tu Auditoría Gratuita</button>
-                    <p class="form-note">Recibe tu informe personalizado en 24h</p>
-                </form>
+        <aside>
+            <div class="metric-card" style="background: #1e293b; color: white; border: none;">
+                <h3 style="margin-top:0">¿Qué analizamos?</h3>
+                <ul style="padding-left: 20px; font-size: 0.9rem; color: #cbd5e1;">
+                    <li style="margin-bottom:10px">Fugas de tóner no justificadas.</li>
+                    <li style="margin-bottom:10px">Ratio de impresión color vs. B/N.</li>
+                    <li style="margin-bottom:10px">Optimización de colas de trabajo mediante IA.</li>
+                </ul>
+                <hr style="border-color: #334155; margin: 20px 0;">
+                <p style="font-size: 0.8rem; opacity: 0.8;">Informe procesado bajo estándares de seguridad corporativa.</p>
             </div>
-        </section>
-    </main>
+        </aside>
+    </div>
+</div>
 
-    <footer>
-        <div>© 2026 Printing Workflow IA</div>
-        <div style="display: flex; gap: 20px;">
-            <a href="#" style="color: inherit; text-decoration: none;">Privacidad</a>
-            <a href="#" style="color: inherit; text-decoration: none;">Términos</a>
-        </div>
-    </footer>
+<script>
+    // Tu lógica original de Script adaptada
+    const form = document.getElementById('ia-form');
+    const btn = document.getElementById('submit-btn');
+    const resArea = document.getElementById('response-area');
 
-    <script>
-        // Inicializar iconos
-        lucide.createIcons();
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        
+        // Validación rápida
+        const nombre = document.getElementById('empresa_nombre').value;
+        if(nombre.length < 3) return alert('Nombre demasiado corto');
 
-        // Manejo básico del formulario
-        document.getElementById('audit-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('¡Solicitud enviada! Nos pondremos en contacto en menos de 24h.');
-        });
-    </script>
+        btn.disabled = true;
+        btn.textContent = 'Calculando Métricas...';
+        
+        // Simulación de éxito para demo
+        setTimeout(() => {
+            resArea.className = 'status-success visible';
+            document.getElementById('res-title').textContent = 'Análisis Iniciado';
+            document.getElementById('res-text').textContent = 'El dashboard de ahorro para ' + nombre + ' se está generando.';
+            btn.textContent = 'Informe Solicitado';
+            form.style.opacity = '0.5';
+            form.style.pointerEvents = 'none';
+        }, 1500);
+    });
+</script>
+
 </body>
 </html>

@@ -1,0 +1,9 @@
+Cada vez que hagas un cambio en Visual Studio Code (por ejemplo, cambiar un texto o un color), debes hacer lo siguiente en la terminal:
+
+Guardar: Presiona Ctrl + S en el archivo.
+
+Preparar (git add .): Le dices a Git qué archivos quieres subir.
+
+Etiquetar (git commit -m "Descripción del cambio"): Le pones un nombre a esa versión.
+
+Subir (git push origin main): Envías los cambios a la web.
